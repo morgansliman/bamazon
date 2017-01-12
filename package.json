@@ -2,7 +2,7 @@
   "name": "bamazon",
   "version": "1.0.0",
   "description": "bamazon homework",
-  "main": "app.js",
+  "main": "BamazonCustomer.js",
   "dependencies": {
     "inquirer": "^2.0.0",
     "mysql": "^2.12.0"
