@@ -1,0 +1,24 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "bamazon homework",
+  "main": "app.js",
+  "dependencies": {
+    "inquirer": "^2.0.0",
+    "mysql": "^2.12.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/morgansliman/bamazon.git"
+  },
+  "author": "morgansliman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/morgansliman/bamazon/issues"
+  },
+  "homepage": "https://github.com/morgansliman/bamazon#readme"
+}
