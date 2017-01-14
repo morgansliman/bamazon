@@ -33,7 +33,7 @@ function updateDatabase(item, quantity) {
     var total = item.Price * quantity;
     var query = "UPDATE `Bamazon`.`Products` SET `StockQuantity`= ? WHERE `ItemID`= ?;";
     item.StockQuantity -= quantity;
-    conn.query(query, [item.StockQuantity, item.ItemID], function(err, res) {
+    conn.query(query, [item.StockQuantity, item.ItemID], function(err) {
         if (err) throw err;
     });
     total = formatMoney(total.toString());
