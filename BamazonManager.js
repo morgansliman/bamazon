@@ -113,7 +113,79 @@ function addInventory() {
 }
 
 function addNewProduct() {
-    console.log('add product');
+    inquirer.prompt([
+        {
+            name: 'ProductName',
+            type: 'input',
+            message: 'New product name:'
+        },
+        {
+            name: 'DepartmentName',
+            type: 'input',
+            message: (ans) => {
+                return `Department name for ${ans.ProductName}:`;
+            }
+        },
+        {
+            name: 'Price',
+            type: 'input',
+            message: (ans) => {
+                return `Price for ${ans.ProductName}: $`;
+            },
+            validate: (value) => {
+                if (!isNaN(value) && (0 < value)) {
+                    return true;
+                }
+                return 'Price must be a positive number';
+            },
+            filter: (value) => {
+                return parseFloat(value).toFixed(2);
+            }
+        },
+        {
+            name: 'StockQuantity',
+            type: 'input',
+            message: (ans) => {
+                return `Number of ${ans.ProductName} units in stock:`;
+            },
+            validate: (value) => {
+                if (!isNaN(value) && (0 <= value) && (value.indexOf('.') == -1)) {
+                    return true;
+                }
+                return 'Quantity must be a positive, whole number or 0';
+            }
+        }
+    ]).then((answers) => {
+        console.table([answers]);
+        inquirer.prompt([
+            {
+                name: 'continue',
+                type: 'confirm',
+                message: 'Is this correct?',
+                default: true
+            },
+            {
+                name: 'retry',
+                type: 'confirm',
+                message: 'Would you like to edit your entry?',
+                default: true,
+                when: (ans) => {
+                    return !ans.continue;
+                }
+            }
+        ]).then((verify) => {
+            if (verify.continue) {
+                let query = 'INSERT INTO `Bamazon`.`Products` SET ?';
+                conn.query(query, answers, (err) => {
+                    if (err) throw err;
+                    console.log(`New product ~${answers.ProductName}~ added to inventory.`);
+                    exitPrompt();
+                });
+            }
+            else if (verify.retry) addNewProduct();
+            else exitPrompt();
+        });
+    });
 }
 
 function exitPrompt() {

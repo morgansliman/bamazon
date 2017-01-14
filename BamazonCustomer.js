@@ -14,30 +14,14 @@ const conn = mysql.createConnection({
     database: 'Bamazon'
 });
 
-function formatMoney(price) {
-    var dollars;
-    var cents = price.indexOf('.') == -1 ? (
-        dollars = price,
-        '00'
-        ) : price.split('.')[1].length == 1 ? (
-            dollars = price.split('.')[0],
-            price.split('.')[1] + '0'
-            ) : (
-                dollars = price.split('.')[0],
-                price.split('.')[1]
-            );
-
-    return `$${dollars}.${cents}`;
-}
 function updateDatabase(item, quantity) {
-    var total = item.Price * quantity;
+    var total = (item.Price * quantity).toFixed(2);
     var query = "UPDATE `Bamazon`.`Products` SET `StockQuantity`= ? WHERE `ItemID`= ?;";
-    item.StockQuantity -= quantity;
+    item.StockQuantity -= parseInt(quantity);
     conn.query(query, [item.StockQuantity, item.ItemID], function(err) {
         if (err) throw err;
     });
-    total = formatMoney(total.toString());
-    console.log('Total cost:', total);
+    console.log('Total cost: $' + total);
     inquirer.prompt({
         type: 'confirm',
         name: 'continue',
